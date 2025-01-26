@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/alecthomas/assert/v2"
-	go_specs_greet "github.com/mzzz-zzm/go-tdd-practice/adapters/httpserver"
 	tc "github.com/testcontainers/testcontainers-go/modules/compose"
 
+	"github.com/mzzz-zzm/go-tdd-practice/adapters/httpserver"
 	"github.com/mzzz-zzm/go-tdd-practice/specifications"
 )
 
@@ -41,13 +41,13 @@ func TestGreeterServer(t *testing.T) {
 	// host, err := testsvrContainer.Host(ctx)
 	// assert.NoError(t, err)
 	// url := fmt.Sprintf("http://%s:%s", host, port.Port())
-	// driver := go_specs_greet.Driver{BaseURL: url, Client: &client}
+	// driver := httpserver.Driver{BaseURL: url, Client: &client}
 
 	// --- case 2: use Endpoint ---
 	endPt, err := testsvrContainer.Endpoint(ctx, "http")
 	assert.NoError(t, err)
 
-	driver := go_specs_greet.Driver{
+	driver := httpserver.Driver{
 		BaseURL: endPt,
 		Client:  &client,
 	}

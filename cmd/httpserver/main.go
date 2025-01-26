@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	go_specs_greet "github.com/mzzz-zzm/go-tdd-practice"
+	"github.com/mzzz-zzm/go-tdd-practice/adapters/httpserver"
 )
 
 func main() {
-	handler := http.HandlerFunc(go_specs_greet.Handler)
+	handler := http.HandlerFunc(httpserver.Handler)
 	if err := http.ListenAndServe(":8080", handler); err != nil {
 		log.Fatal(err)
 	}
