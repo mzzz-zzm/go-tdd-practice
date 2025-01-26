@@ -2,7 +2,9 @@ package main_test
 
 import (
 	"context"
+	"net/http"
 	"testing"
+	"time"
 
 	"github.com/alecthomas/assert/v2"
 	go_specs_greet "github.com/mzzz-zzm/go-tdd-practice/adapters/httpserver"
@@ -29,18 +31,26 @@ func TestGreeterServer(t *testing.T) {
 	testsvrContainer, err := compose.ServiceContainer(ctx, "testsvr")
 	assert.NoError(t, err)
 
+	client := http.Client{
+		Timeout: 1 * time.Second,
+	}
+
 	// --- case 1: use MappedPort and Host ---
 	// port, err := testsvrContainer.MappedPort(ctx, "8080/tcp")
 	// assert.NoError(t, err)
 	// host, err := testsvrContainer.Host(ctx)
 	// assert.NoError(t, err)
 	// url := fmt.Sprintf("http://%s:%s", host, port.Port())
-	// driver := go_specs_greet.Driver{BaseURL: url}
+	// driver := go_specs_greet.Driver{BaseURL: url, Client: &client}
 
 	// --- case 2: use Endpoint ---
 	endPt, err := testsvrContainer.Endpoint(ctx, "http")
 	assert.NoError(t, err)
-	driver := go_specs_greet.Driver{BaseURL: endPt}
+
+	driver := go_specs_greet.Driver{
+		BaseURL: endPt,
+		Client:  &client,
+	}
 
 	specifications.GreetSpecifications(t, driver)
 }
