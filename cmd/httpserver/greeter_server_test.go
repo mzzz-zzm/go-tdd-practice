@@ -56,6 +56,8 @@ func TestGreeterServer(t *testing.T) {
 	specifications.GreetSpecifications(t, driver)
 }
 
+// first time go mod download takes a long time, avoid timeout by increasing -timeout
+// ex) go test -v -timeout 300s -run ^TestGreeterServerWithTemplateConfig$ github.com/mzzz-zzm/go-tdd-practice/cmd/httpserver
 func TestGreeterServerWithTemplateConfig(t *testing.T) {
 	// Get the absolute path to the project root (where the Dockerfile is)
 	// projectRoot, err := filepath.Abs("../..") // Adjust this path if needed
@@ -63,11 +65,12 @@ func TestGreeterServerWithTemplateConfig(t *testing.T) {
 	// dcfpath := filepath.Join(projectRoot, "Dockerfile")
 
 	dockerConfig := adapters.DockerConfig{
-		DockerFilePath: "Dockerfile",
+		DockerFileName: "Dockerfile",
 		ServiceName:    "testsvr",
 		ContainerName:  "testsvr",
 		Port:           8080,
 		Protocol:       "http",
+		BinToBuild:     "httpserver",
 	}
 
 	endPt := adapters.StartDockerServer(t, dockerConfig)

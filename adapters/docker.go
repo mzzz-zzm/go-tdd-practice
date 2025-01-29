@@ -17,8 +17,10 @@ services:
   {{.ServiceName}}:
     container_name: {{.ContainerName}}
     build:
-      context: ../../../
-      dockerfile: {{.DockerFilePath}}
+      context: ../../
+      dockerfile: {{.DockerFileName}}
+      args:
+        - BIN_TO_BUILD={{.BinToBuild}}
     ports:
       - "{{.Port}}:{{.Port}}"
     
@@ -33,11 +35,12 @@ services:
 `
 
 type DockerConfig struct {
-	DockerFilePath string
+	DockerFileName string
 	ServiceName    string
 	ContainerName  string
 	Port           uint
 	Protocol       string
+	BinToBuild     string
 }
 
 func StartDockerServer(
@@ -49,16 +52,12 @@ func StartDockerServer(
 	assert.NoError(t, err)
 	buf := bytes.Buffer{}
 	err = templ.Execute(&buf, dockerConfig)
-
-	// approvals.VerifyString(t, buf.String())
-
 	assert.NoError(t, err)
 
 	// create temporary docker-compose.yml file
-	tmpFile, err := os.CreateTemp("./temporaryfiles", "docker-compose-*.yml")
+	tmpFile, err := os.CreateTemp(".", "docker-compose-*.yml")
 	assert.NoError(t, err)
 
-	//defer os.Remove(tmpFile.Name())
 	defer func() {
 		err := os.Remove(tmpFile.Name())
 		assert.NoError(t, err)
@@ -69,8 +68,6 @@ func StartDockerServer(
 	assert.NoError(t, err)
 
 	compose, err := tc.NewDockerCompose(tmpFile.Name())
-
-	// compose, err := tc.NewDockerCompose(buf.String())
 	assert.NoError(t, err)
 	t.Cleanup(func() {
 		err := compose.Down(context.Background(), tc.RemoveOrphans(true), tc.RemoveImagesLocal)

@@ -6,6 +6,7 @@ WORKDIR /app
 COPY go.mod ./
 RUN go mod download
 COPY . .
-RUN go build -o svr cmd/httpserver/*.go
+ARG BIN_TO_BUILD
+RUN go build -o svr cmd/${BIN_TO_BUILD}/*.go
 EXPOSE 8080
 CMD [ "./svr" ]

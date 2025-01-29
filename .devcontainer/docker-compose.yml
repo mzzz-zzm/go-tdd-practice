@@ -6,6 +6,8 @@ services:
     build:
       context: ../
       dockerfile: Dockerfile
+      args:
+        - BIN_TO_BUILD=httpserver
     ports:
       - "8080:8080"
     
