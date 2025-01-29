@@ -18,6 +18,7 @@ require (
 	github.com/Microsoft/hcsshim v0.11.5 // indirect
 	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d // indirect
 	github.com/alecthomas/repr v0.4.0 // indirect
+	github.com/approvals/go-approval-tests v0.0.0-20250122182702-b976d2ddb79f // indirect
 	github.com/aws/aws-sdk-go-v2 v1.24.1 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.26.6 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.16.16 // indirect

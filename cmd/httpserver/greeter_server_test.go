@@ -9,6 +9,7 @@ import (
 	"github.com/alecthomas/assert/v2"
 	tc "github.com/testcontainers/testcontainers-go/modules/compose"
 
+	"github.com/mzzz-zzm/go-tdd-practice/adapters"
 	"github.com/mzzz-zzm/go-tdd-practice/adapters/httpserver"
 	"github.com/mzzz-zzm/go-tdd-practice/specifications"
 )
@@ -46,6 +47,34 @@ func TestGreeterServer(t *testing.T) {
 	// --- case 2: use Endpoint ---
 	endPt, err := testsvrContainer.Endpoint(ctx, "http")
 	assert.NoError(t, err)
+
+	driver := httpserver.Driver{
+		BaseURL: endPt,
+		Client:  &client,
+	}
+
+	specifications.GreetSpecifications(t, driver)
+}
+
+func TestGreeterServerWithTemplateConfig(t *testing.T) {
+	// Get the absolute path to the project root (where the Dockerfile is)
+	// projectRoot, err := filepath.Abs("../..") // Adjust this path if needed
+	// assert.NoError(t, err)
+	// dcfpath := filepath.Join(projectRoot, "Dockerfile")
+
+	dockerConfig := adapters.DockerConfig{
+		DockerFilePath: "Dockerfile",
+		ServiceName:    "testsvr",
+		ContainerName:  "testsvr",
+		Port:           8080,
+		Protocol:       "http",
+	}
+
+	endPt := adapters.StartDockerServer(t, dockerConfig)
+
+	client := http.Client{
+		Timeout: 1 * time.Second,
+	}
 
 	driver := httpserver.Driver{
 		BaseURL: endPt,
