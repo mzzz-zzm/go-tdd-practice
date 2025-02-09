@@ -21,6 +21,7 @@ services:
       dockerfile: {{.DockerFileName}}
       args:
         - BIN_TO_BUILD={{.BinToBuild}}
+        - PORT_TO_EXPOSE={{.Port}}
     ports:
       - "{{.Port}}:{{.Port}}"
     

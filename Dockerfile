@@ -8,5 +8,6 @@ RUN go mod download
 COPY . .
 ARG BIN_TO_BUILD
 RUN go build -o svr cmd/${BIN_TO_BUILD}/*.go
-EXPOSE 8080
+ARG PORT_TO_EXPOSE
+EXPOSE ${PORT_TO_EXPOSE}
 CMD [ "./svr" ]

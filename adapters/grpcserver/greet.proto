@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "github.com/mzzz-zzm/go-tdd-practice/adapters/grpcserver";
+
+package grpcserver;
+
+service Greeter {
+    rpc Greet (GreetRequest) returns (GreetReply) {}
+    rpc Curse (GreetRequest) returns (GreetReply) {}
+}
+
+message GreetRequest {
+    string name = 1;
+}
+
+message GreetReply {
+    string message = 1;
+}
+
+// how to compile
+// cd to this directoy and exec:
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative greet.proto
