@@ -85,4 +85,5 @@ func TestGreeterServerWithTemplateConfig(t *testing.T) {
 	}
 
 	specifications.GreetSpecifications(t, driver)
+	specifications.CurseSpecifications(t, driver)
 }
